@@ -3,7 +3,9 @@ A simple wrapper for matplotlib. Helps to make simple graphs easily, without hav
 
 # Simple use:
 `from kgraph import LineGraph`
+
 `lg = LineGraph([1,1],[2,2],[3,3])`
+
 `lg.show()`
 
 # List of features available:
