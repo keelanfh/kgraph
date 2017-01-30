@@ -25,7 +25,9 @@ Unless otherwise stated, simply assign values to these attributes.
 `lg.x.markers.format()` - pass a pair of lists describing marker formatting, i.e. if you want numbers mapped to letters, call `lg.x.markers.format([1,2,3],['A','B','C'])`. Alternatively, you can pass a list of tuples, or a function that described the mapping. 
 
 `lg2 = LineGraph()`
+
 `lg += lg2`
+
 `lg.show()`
 
 This is the way to add mutiple data series to the same plot.
