@@ -1,7 +1,10 @@
-import matplotlib.pyplot
+from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
-matplotlib.pyplot.style.use('ggplot')
+# plt.style.use('ggplot')
+
+graphs_used = 0
 
 
 class Markers(object):
@@ -86,13 +89,10 @@ class DataSet(object):
 
 
 class LineGraph(object):
-    # instances = 0
-
-    plt = matplotlib.pyplot
-
+    graphs_used += 1
     def __init__(self, x_data, y_data=None, lw=2.5, *args, **kwargs):
         # LineGraph.instances += 1
-        self.plt = matplotlib.pyplot
+        # self.plt = plt
 
         # If only one argument, convert to two
         if not y_data:
@@ -101,13 +101,16 @@ class LineGraph(object):
         self.data = [DataSet(x_data, y_data)]
 
         # Create the axes object
-        self.ax = self.plt.figure().gca()
+        self.fig = Figure()
+        self.ax = self.fig.gca()
+        self.canvas = FigureCanvas(self.fig)
         self._lineweight = lw
         self.x = Axis(self.ax, 'x')
         self.y = Axis(self.ax, 'y')
         self.ax.grid(b=False)
         self.ax.set_axis_bgcolor('white')
-
+        for spine in ["top", "bottom", "left", "right"]:
+            self.ax.spines[spine].set_visible(False)
         self.made = False
 
         # args and kwargs
@@ -124,8 +127,6 @@ class LineGraph(object):
 
     def _set_lineweight(self, lineweight):
         self._lineweight = lineweight
-        self.current_data.graph.remove()
-        self.current_data.graph, = self.ax.plot(self.current_data.x_data, self.current_data.y_data, lw=self.lineweight)
 
     lineweight = property(_get_lineweight, _set_lineweight)
 
@@ -150,7 +151,7 @@ class LineGraph(object):
             filename = self.title + '.svg'
         if websafe:
             filename = filename.replace(' ', '-')
-        self.plt.savefig(filename, format=format)
+        self.fig.savefig(filename, format=format)
 
     def colors(self):
         pass
@@ -158,44 +159,3 @@ class LineGraph(object):
     def __add__(self, other):
         self.data += other.data
         return self
-
-
-# Sample usage
-
-if __name__ == '__main__':
-    # Working section
-    trump = LineGraph([(1, 1), (2, 2), (3, 3)])
-    trump.export(filename='trump.svg')
-    hillary = LineGraph([(1, 3), (2, 2), (3, 1)])
-    hillary.export(filename='hillary.svg')
-
-    trump.data[0]
-    # (1,2,3)
-
-    # Not working section
-    # print hillary.current_data.y_data
-    jeff = trump + hillary
-    jeff.data[0].x_data
-    jeff.data[1].y_data
-    jeff.export(filename='jeff.svg')
-
-    # trump.lineweight = 5
-    # trump.x.label = 'This one thing'
-    # trump.y.label = 'Another thing'
-    # trump.ax.plot()
-    # trump.title = 'A graph about trump'
-    # trump.x.markers = [1, 2, 3]
-    # trump.x.markers.format([1, 2, 3], ['A', 'B', 'C'])
-    # trump += hillary
-    # trump.export(filename='trump.svg')
-    # trump.plt.show()
-    # total.x.label = "TEST"
-    # total.export(filename='test.svg', websafe=True)
-
-
-# Maybe only create the ax object when an ax call is made, or ax is otherwise required.
-
-
-
-# trump += LineGraph([2,2,6], [1,4,5])
-# need to define this
