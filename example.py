@@ -2,19 +2,19 @@ from LineGraph import LineGraph
 
 # Let's say you've got some data:
 
-x = [1,2,3,4,5,6,7,8,9,10]
-y = [2,4,5,6,6,7,8,9,1,3]
+x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+y = [2, 4, 5, 6, 6, 7, 8, 9, 1, 3]
 
 # You want to make a graph.
 # Just try this:
 
-LineGraph(x,y).export('example1')
+LineGraph(x, y).export('example1')
 
 # Check it out - you should see a new file!
 
 # No titles though... let's sort that:
 
-gr1 = LineGraph(x,y)
+gr1 = LineGraph(x, y)
 
 gr1.title = 'A graph'
 gr1.x.label = 'This one thing'

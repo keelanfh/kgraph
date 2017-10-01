@@ -4,12 +4,15 @@ from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
+
 class MissingTitleException(Exception):
     pass
+
 
 class Markers(object):
     """Class for axis markers.
     ax object passed from LineGraph.Axis object."""
+
     def __init__(self, ax, direction):
         self.ax = ax
         self.direction = direction
@@ -41,6 +44,7 @@ class Markers(object):
 
 class Axis(object):
     """Axis Object. Container for ax"""
+
     def __init__(self, ax, direction):
         self.ax = ax
         self.direction = direction
@@ -60,20 +64,19 @@ class Axis(object):
         elif self.direction == 'y':
             self.ax.set_ylabel(text)
 
-
     @property
+    def range(self):
+        if self.direction == 'x':
+            return self.ax.get_xlim
+        elif self.direction == 'y':
+            return self.ax.get_ylim
+
+    @range.setter
     def range(self, arange):
         if self.direction == 'x':
             self.ax.set_xlim(arange)
         elif self.direction == 'y':
             self.ax.set_ylim(arange)
-
-    @range.setter
-    def setter(self):
-        if self.direction == 'x':
-            return self.ax.get_xlim
-        elif self.direction == 'y':
-            return self.ax.get_ylim
 
     @property
     def markers(self):
@@ -85,6 +88,7 @@ class Axis(object):
             self.ax.set_xticks(alist)
         elif self.direction == 'y':
             self.ax.set_yticks(alist)
+
 
 class DataSet(object):
     def __init__(self, x_data, y_data, label=None, lw=None, color=None):
@@ -112,7 +116,7 @@ class LineGraph(object):
         self.ax = self.fig.gca()
         self.canvas = FigureCanvas(self.fig)
 
-        # Set the lineweight at global level (for all DataSets in graph)
+        #  Set the lineweight at global level (for all DataSets in graph)
         self._lineweight = lw
 
         # Create Axis objects
@@ -124,7 +128,7 @@ class LineGraph(object):
         self.ax.set_axis_bgcolor('white')
         for spine in ["top", "bottom", "left", "right"]:
             self.ax.spines[spine].set_visible(False)
-        # args and kwargs
+            # args and kwargs
 
     def make(self):
         # Need a better way of defining 'ax' object (need a new one by default)
